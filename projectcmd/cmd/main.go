@@ -1,9 +1,13 @@
 package main
 
-//"projectcmd/internal/fnc"
-//"fmt"
+import (
+	/*
+		"projectcmd/internal/fnc"
+		"fmt"*/
+	"projectcmd/internal/fnc"
+)
 
 func main() {
 	//fmt.Println("Hello Word")
-	internal.Fnc_1()
+	fnc.Fnc_()
 }
