@@ -8,4 +8,5 @@ import (
 func main() {
 	fmt.Println("Hello Word")
 	pkg1.MnFnc()
+	pkg1.OterFnc()
 }
