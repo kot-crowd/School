@@ -5,7 +5,7 @@ import (
 		"projectcmd/internal/fnc"*/
 	"fmt"
 	"projectcmd/internal/fnc"
-	mtd "projectcmd/internal/metods"
+	"projectcmd/internal/mtd"
 )
 
 func main() {
