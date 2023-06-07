@@ -1,1 +1,14 @@
+Обязательные команды перед установкой любого приложения
+
+sudo apt-get update
+sudo apt upgrade
+можно
+sudo apt  update
+sudo apt get-upgrade
+apt-get dist-upgrade
+для вывода списка пакетов, которым требуется обновление 
+sudo apt list —upgradable
+для обновления пакетов персонально
+sudo apt —only-upgrade install <имя пакета> (до пробела)
+
 Установка приложений в линукс - [sudo] apt install <приложение>
