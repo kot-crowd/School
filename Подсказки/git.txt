@@ -1,15 +1,13 @@
 Работа с GIt
 
 git init - инициация гита на локале
+git remote add origin <адресс ссылки на репозиторий> - привязать git к GitHub
 Обязательные действия после инициализации и подключения git-a
     1. git add (—all) - добавление файлов/папок в git
     2. git commit -m "Text" - фиксация изменений
+    3. git push origin master - загрузить git в GitHub
 git status - обзор предстоящих изменений
 git remote -v - включение работы с  GitHub
-
-git remote add origin <адресс ссылки на репозиторий> - привязать git к GitHub
-
 git remote rm origin - отвязать git от GitHUb
-    3. git push origin master - загрузить git в GitHub
 
 https://github.com/settings/tokens - сгенерировать токен
