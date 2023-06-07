@@ -1,3 +1,4 @@
+/* Папки для работы в папке "Загрузки"* или в репозитории https://github.com/semyon-dev/stepik-go/tree/master/work_with_files/task_sep_1 */
 package main
 
 import (
