@@ -1,0 +1,9 @@
+Упаковка:
+
+cd ~/go
+tar -czvf /mnt/h/packages.tar.gz pkg
+
+распаковка:
+cd ~/go
+rm -rf ./pkg
+tar -xvf /mnt/h/packages.tar.gz

@@ -1,0 +1,12 @@
+Условия работоспособности GO
+1. У тебя установлен go по пути: /usr/local/go
+
+В .profile внесены:
+1. export PATH=$PATH:/usr/local/go/bin
+2. export GOPATH=$HOME/go
+3. export PATH=$PATH:$GOPATH/bin
+Выполнить .profile
+4. ~/.profile
+5. Перезагрузить комп
+Сайт установки GO
+https://go.dev/doc/install
