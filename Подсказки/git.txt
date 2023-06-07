@@ -1,0 +1,14 @@
+Работа с GIt
+
+git init - инициация гита на локале
+git add (—all) - добавление файлов/папок в git
+git commit -m "Text" - фиксация изменений
+git status - обзор предстоящих изменений
+git remote -v - включение работы с  GitHub
+
+git remote add origin <адресс ссылки на репозиторий> - привязать git к GitHub
+
+git remote rm origin - отвязать git от GitHUb
+git push origin master - загрузить git в GitHub
+
+https://github.com/settings/tokens - сгенерировать токен

@@ -1,0 +1,12 @@
+go 1.19
+
+use (
+	./httpfile
+	./inputvalue
+	./lessons
+	./printing
+	./projectcmd
+	./task
+	./timefromntp
+	./yourproject.com
+)
