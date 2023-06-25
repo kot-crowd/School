@@ -11,3 +11,4 @@ git remote -v - включение работы с  GitHub
 git remote rm origin - отвязать git от GitHUb
 
 https://github.com/settings/tokens - сгенерировать токен
+Пароль ФИО
