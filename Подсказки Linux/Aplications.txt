@@ -24,3 +24,8 @@ sudo dpkg -r virtualbox && sudo apt autoremove -y && sudo apt purge -y virtualbo
 
 Поиск:
 find -iname <name> - поиск от места нахождения включая все подпапки
+
+Удаление из update повторных настроек и отсутствия ip при попытке обновления:
+sudo rm /etc/apt/sources.list.d/*
+sudo apt list --upgradable
+sudo apt upgrade
