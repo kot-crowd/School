@@ -12,3 +12,6 @@ git remote rm origin - отвязать git от GitHUb
 
 https://github.com/settings/tokens - сгенерировать токен
 Пароль ФИО
+
+token:
+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
