@@ -6,6 +6,8 @@ git remote add origin <адресс ссылки на репозиторий> - 
     1. git add (—all) - добавление файлов/папок в git
     2. git commit -m "Text" - фиксация изменений
     3. git push origin master - загрузить git в GitHub авторизация по почтовому адресу(kos_dekastryr@mail.ru) и токену
+При необходимости внести изменеия тут же повтор 1-3    
+    
 git status - обзор предстоящих изменений
 git remote -v - включение работы с  GitHub
 git remote rm origin - отвязать git от GitHUb
