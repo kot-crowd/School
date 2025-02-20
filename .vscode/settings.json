@@ -1,0 +1,6 @@
+{
+  "editor.wordWrap": "wordWrapColumn",
+  "editor.wordWrapColumn": 120,
+  "editor.minimap.enabled": false,
+  "editor.formatOnSave": true
+}
