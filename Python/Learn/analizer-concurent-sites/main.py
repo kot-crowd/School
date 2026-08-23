@@ -1,7 +1,7 @@
 from api_client import fetch_site_metrics
 from parser import extract_metrics
 from report_generator import generate_text_report
-import requests
+from export_report import export_metrics_to_csv
 
 def main():
     site_url = input("Введите URL сайта конкурента: ").strip()
@@ -15,6 +15,10 @@ def main():
         print("\n--- Отчёт по сайту ---\n")
         print(report)
         print("\n---------------------\n")
+
+        # Экспорт в CSV для маркетолога
+        csv_file = export_metrics_to_csv(metrics, "competitor_report.csv")
+        print(f"Отчёт сохранён в файл: {csv_file}")
     except requests.exceptions.RequestException as e:
         print(f"Ошибка при запросе к API: {e}")
     except Exception as e:
