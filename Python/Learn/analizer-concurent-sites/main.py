@@ -2,6 +2,7 @@ from api_client import fetch_site_metrics
 from parser import extract_metrics
 from report_generator import generate_text_report
 from export_report import export_metrics_to_csv
+import requests
 
 def main():
     site_url = input("Введите URL сайта конкурента: ").strip()
