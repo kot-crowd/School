@@ -1,0 +1,148 @@
+import api_client
+import re
+from typing import Any, Dict, Optional
+from datetime import datetime
+
+
+def _normalize(value: Any) -> Any:
+    """Приводит значение к удобному виду, преобразует datetime в строку."""
+    if value is None:
+        return None
+    if isinstance(value, list):
+        if len(value) == 1:
+            return _normalize(value[0])
+        return [_normalize(v) for v in value]
+    if isinstance(value, datetime):
+        return value.isoformat()
+    return value
+
+
+def _extract_from_text(text: str, field: str) -> Optional[Any]:
+    """
+    Извлекает значение поля из сырого WHOIS-текста.
+    Шаблоны привязаны к началу строки и не пересекают переносы.
+    Для name_servers собираются все совпадения.
+    """
+    if not text:
+        return None
+
+    patterns = {
+        'org': [
+            r'^org:[ \t]*(\S[^\r\n]*)',
+            r'^organization:[ \t]*(\S[^\r\n]*)',
+            r'^registrant:[ \t]*(\S[^\r\n]*)',
+        ],
+        'registrar': [
+            r'^registrar:[ \t]*(\S[^\r\n]*)',
+            r'^registrar_name:[ \t]*(\S[^\r\n]*)',
+        ],
+        'creation_date': [
+            r'^created:[ \t]*(\S[^\r\n]*)',
+            r'^creation date:[ \t]*(\S[^\r\n]*)',
+            r'^registration date:[ \t]*(\S[^\r\n]*)',
+        ],
+        'expiration_date': [
+            r'^paid-till:[ \t]*(\S[^\r\n]*)',
+            r'^expiration date:[ \t]*(\S[^\r\n]*)',
+            r'^expiry date:[ \t]*(\S[^\r\n]*)',
+        ],
+        'updated_date': [
+            r'^last-update:[ \t]*(\S[^\r\n]*)',
+            r'^updated date:[ \t]*(\S[^\r\n]*)',
+            r'^updated:[ \t]*(\S[^\r\n]*)',
+        ],
+        'name_servers': [
+            r'^nserver:[ \t]*(\S[^\r\n]*)',
+            r'^name server:[ \t]*(\S[^\r\n]*)',
+        ],
+        'status': [
+            r'^state:[ \t]*(\S[^\r\n]*)',
+            r'^status:[ \t]*(\S[^\r\n]*)',
+        ],
+        'country': [
+            r'^country:[ \t]*(\S[^\r\n]*)',
+        ],
+    }
+
+    flags = re.IGNORECASE | re.MULTILINE
+
+    # name_servers — собираем все строки nserver
+    if field == 'name_servers':
+        results = []
+        for pattern in patterns.get(field, []):
+            for m in re.finditer(pattern, text, flags):
+                val = m.group(1).strip()
+                if val and val not in results:
+                    results.append(val)
+        return results if results else None
+
+    # остальные поля — первое непустое совпадение
+    for pattern in patterns.get(field, []):
+        m = re.search(pattern, text, flags)
+        if m:
+            val = m.group(1).strip()
+            if val:
+                return val
+    return None
+
+
+def parse_domain_info(raw: Dict[str, Any]) -> Dict[str, Any]:
+    """Извлекает 9 полей из словаря whois с fallback на сырой текст."""
+    text = raw.get('text') or ''
+
+    def get_value(primary_key, alt_keys=None, text_field=None):
+        # 1) значение из словаря библиотеки whois
+        val = raw.get(primary_key)
+        if val:                       # None, '', [] → пропускаем
+            return val
+        # 2) альтернативные ключи словаря
+        if alt_keys:
+            for k in alt_keys:
+                val = raw.get(k)
+                if val:
+                    return val
+        # 3) парсинг из сырого WHOIS-текста
+        if text_field and text:
+            return _extract_from_text(text, text_field)
+        return None
+
+    return {
+        "доменное имя": _normalize(get_value('domain_name')),
+        "владелец или организация": _normalize(
+            get_value('org', ['organization', 'registrant_name', 'registrant'], 'org')
+        ),
+        "регистратор": _normalize(
+            get_value('registrar', ['registrar_name'], 'registrar')
+        ),
+        "дата регистрации": _normalize(
+            get_value('creation_date', ['created_date', 'registration_date'], 'creation_date')
+        ),
+        "дата истечения": _normalize(
+            get_value('expiration_date', ['expiry_date', 'paid_till'], 'expiration_date')
+        ),
+        "дата последнего обновления": _normalize(
+            get_value('updated_date', ['last_updated', 'update_date'], 'updated_date')
+        ),
+        "серверы имён": _normalize(
+            get_value('name_servers', ['nameservers'], 'name_servers')
+        ),
+        "статус домена": _normalize(
+            get_value('status', ['state'], 'status')
+        ),
+        "страна регистранта": _normalize(
+            get_value('country', [], 'country')
+        ),
+    }
+
+
+if __name__ == "__main__":
+    test_domain = "yandex.ru"
+    raw = api_client.get_domain_info(test_domain)
+
+    if raw:
+        parsed = parse_domain_info(raw)
+        print(f"Обработанные данные для домена {test_domain}:\n")
+        for key, value in parsed.items():
+            print(f"{key}: {value}")
+    else:
+        print(f"Не удалось получить данные о домене {test_domain}")

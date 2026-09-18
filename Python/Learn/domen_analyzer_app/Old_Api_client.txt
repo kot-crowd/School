@@ -1,0 +1,28 @@
+import whois
+from typing import Any, Dict, Optional
+import pprint
+
+
+def get_domain_info(domain: str) -> Optional[Dict[str, Any]]:
+    """
+    Получает информацию о домене с помощью библиотеки python-whois.
+
+    Параметры:
+        domain (str): доменное имя.
+
+    Возвращает:
+        dict: словарь с данными о домене или None, если произошла ошибка.
+    """
+    try:
+        w = whois.whois(domain)
+        # Используем vars(w) для получения всех атрибутов экземпляра
+        info = vars(w).copy()
+        # Явно добавляем доменное имя и сырой ответ, если их нет в vars
+        info['domain_name'] = w.domain_name
+        info['text'] = w.text
+        print (f"Получена информация о домене {domain}:\n")
+        pprint.pprint(info, sort_dicts=False, width=120)
+        return info
+    except Exception as e:
+        print(f"Ошибка при получении данных для домена {domain}: {e}")
+        return None
